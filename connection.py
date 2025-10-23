@@ -3,15 +3,22 @@ from config import Config
 
 def get_connection():
     try:
-        # Usamos modo thin (no requiere cliente Oracle ni wallet)
-        conn = oracledb.connect(
-            user=Config.DB_USER,
-            password=Config.DB_PASS,
-            host=Config.DB_HOST,
-            port=Config.DB_PORT,
-            service_name=Config.DB_SERVICE
+        # Inicializar el cliente Oracle con wallet
+        oracledb.init_oracle_client(config_dir=Config.wallet_path)
+        print(" Cliente Oracle inicializado")
+
+        connection = oracledb.connect(
+            user=Config.user,
+            password=Config.password,
+            dsn=Config.dsn,
+            config_dir=Config.wallet_path,
+            wallet_location=Config.wallet_path,
+            wallet_password=Config.wallet_password
         )
-        return conn
+
+        print(" Conexión establecida correctamente con Oracle Autonomous DB (Wallet interna)")
+        return connection
+
     except Exception as e:
-        print("❌ Error de conexión:", e)
+        print("Error al conectar:", e)
         raise

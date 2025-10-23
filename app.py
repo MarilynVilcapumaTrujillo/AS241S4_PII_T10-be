@@ -1,7 +1,7 @@
 from flask import Flask
 from config import Config
 from extensions import db
-from routes.managersRoutes import manager_bp
+from routes.usersRoutes import users_bp
 from routes.empleadoRoutes import empleado_bp
 
 def create_app():
@@ -11,10 +11,8 @@ def create_app():
     # Inicializar extensiones
     db.init_app(app)
 
-    
-
     # Registrar rutas
-    app.register_blueprint(manager_bp)
+    app.register_blueprint(users_bp)
     app.register_blueprint(empleado_bp)
 
 
